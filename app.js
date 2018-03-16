@@ -1,4 +1,5 @@
 const express = require('express');
+const { parser } = require('./utils/parser')
 
 app = express();
 
@@ -10,18 +11,11 @@ app.get('/', (req, res) => {
 });
 
 app.get('/api', (req, res) => {
-  const ipaddress = req.ip;
-  const language = req.get('Accept-Language').split(',')[0];
-  const userAgentString = req.get('User-Agent');
-  const start = userAgentString.indexOf('(');
-  const end = userAgentString.indexOf(')');
-  const software = userAgentString.slice(start + 1, end);
+  console.log(req.headers);
+
+  const parsedData = parser(req);
   
-  res.send({
-    ipaddress,
-    language,
-    software
-  });
+  res.send(parsedData);
 });
 
 const port = process.env.PORT || 5000;
